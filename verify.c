@@ -1,10 +1,11 @@
 #include "monty.h"
+#include "prog.h"
 
 arg_t arg = {0, 0};
 
 /**
   * comment_check - checks if line is a comment.
-  * @line - struct containing line content and number.
+  * @line: struct containing line content and number.
   *
   * Return: true if comment otherwise false.
   */
