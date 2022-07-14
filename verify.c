@@ -1,79 +1,42 @@
 #include "monty.h"
-#include "prog.h"
-
-arg_t arg = {0, 0};
-
 /**
-  * comment_check - checks if line is a comment.
-  * @line: struct containing line content and number.
-  *
-  * Return: true if comment otherwise false.
-  */
-bool comment_check(line_t line)
+ * _verify1 - verify function
+ * @num: number
+ * Return: always 0
+ */
+int _verify1(char *num)
 {
-	if (!line.content[0])
-	{
-		free(line.content);
-		return (true);
-	}
+	int temp = 0;
 
-	if (line.content[0][0] == '#')
-	{
-		free(line.content);
-		return (true);
-	}
+	if (!num)
+		return (1);
 
-	return (false);
+	if (num[temp] == 45)
+		temp++;
+	while (num[temp])
+	{
+		if (num[temp] < 48 || num[temp] > 57)
+			return (-1);
+		temp++;
+	}
+	return (0);
 }
 
 /**
-  * argument_check - checks arg validity.
-  * @token: argument to be checked.
-  *
-  * Return: true if valid otherwise false.
-  */
-bool argument_check(char *token)
+ * _verify2 - verify 2 function
+ * @stack: head
+ * @con: integer
+ */
+void _verify2(stack_t **stack, unsigned int con)
 {
-	unsigned int i;
-
-	if (!token)
-		return (false);
-
-	for (i = 0; token[i]; i++)
+	if (_verify1(global.token) == 0)
+		global.num = atoi(global.token);
+	else
 	{
-		if (token[0] == '-')
-			continue;
-		if (token[i] < '0' || token[i] > '9')
-		{
-			return (false);
-		}
-	}
-
-	return (true);
-}
-
-
-/**
-  * push_check - check if push opcode is being used and sets
-  * global argument variable if true.
-  * @line: struct containg line content and number.
-  * @opcode: opcode to compare.
-  * @meta: struct containing all alocated memory.
-  *
-  * Return: NAIN.
-  */
-void push_check(line_t line, meta_t *meta, char *opcode)
-{
-	if ((strcmp(opcode, "push") == 0) &&  !argument_check(line.content[1]))
-	{
-		free(line.content);
-		fprintf(stderr, "L%d: usage: push integer\n", line.number);
-		free(meta->buf);
-		free_stack(&(meta->stack));
-		fclose(meta->file);
-		free(meta);
+		dprintf(2, "L%u: usage: push integer\n", con);
+		free_l(stack);
+		free(global.line);
+		fclose(global.fil);
 		exit(EXIT_FAILURE);
 	}
-	else if (strcmp(opcode, "push") == 0)
-		arg.arg = atoi(line.content[1]);
 }

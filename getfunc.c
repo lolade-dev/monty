@@ -3,62 +3,44 @@
 /**
   * get_op_func - searches and matches text to opcode
   * then returns corresponding function.
-  * @line: struct containing line content and number.
-  * @meta: struct containing all allocated memory.
+  * @num_line: struct containing line content and number.
+  * @tokens: struct containing all allocated memory.
   *
   * Return: pointer to relevant function.
   */
-void (*get_op_func(line_t line, meta_t *meta))(stack_t **, unsigned int)
+void (*func(char *tokens))(stack_t **stack, unsigned int num_line)
 {
-	unsigned int i = 0;
 	instruction_t ops[] = {
-		{"push", push},
-		{"pall", pall},
-		{"pint", pint},
-		{"pop", pop},
-		{"swap", swap},
-		{"add", addop},
-		{"sub", subop},
-		{"mul", mulop},
-		{"div", divop},
-		{"mod", modop},
-		{"nop", nop},
-		{"pchar", pchar},
-		{"pstr", pstr},
-		{"rotl", rotlop},
-		{"rotr", rotrop},
-		{"stack", addst},
-		{"queue", addqu},
-		{NULL, NULL}
-	};
+		{"push", _push},
+		{"pall", _pall},
+		{"pint", _pint},
+		{"pop", _pop},
+		{"swap", _swap},
+		{"add", _add},
+		{"nop", _nop},
+		{"sub", _sub},
+		{"div", _div},
+		{"mul", _mul},
+		{"mod", _mod},
+		{"pchar", _pchar},
+		{"pstr", _pstr},
+		{"rotl", _rotl},
+		{"rotr", _rotr},
+		{"stack", _stack},
+		{"queue", _queue},
+		{"err", _error},
+		{"#", _nop},
+		{NULL, NULL}};
+	int i = 0;
+	int opc;
 
-	if (comment_check(line))
-		return (nop);
-
-	while (ops[i].opcode)
+	while (i < 19)
 	{
-		if (strcmp(ops[i].opcode, line.content[0]) == 0)
-		{
-			push_check(line, meta, ops[i].opcode);
-			if (arg.flag == 1 && strcmp(ops[i].opcode, "push") == 0)
-			{
-				if (line.content)
-					free(line.content);
-				return (qpush);
-			}
-			free(line.content);
+		opc = strcmp(ops[i].opcode, tokens);
+		if (opc == 0)
 			return (ops[i].f);
-		}
-
 		i++;
 	}
 
-	fprintf(stderr, "L%d: unknown instruction %s\n",
-			line.number, line.content[0]);
-	free(line.content);
-	free(meta->buf);
-	free_stack(&(meta->stack));
-	fclose(meta->file);
-	free(meta);
-	exit(EXIT_FAILURE);
+	return (ops[17].f);
 }

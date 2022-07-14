@@ -8,27 +8,24 @@
   */
 void pchar(stack_t **stack, unsigned int nline)
 {
-	char c;
 	stack_t *temp;
 
-	if (stack == NULL || *stack == NULL)
-	{
-		fprintf(stderr, "L%d: can't pchar, stack empty\n", nline);
-		exit(EXIT_FAILURE);
-	}
-
 	temp = *stack;
-	while (temp)
+	if (temp == NULL)
 	{
-		if (temp->prev == NULL)
-			break;
-		temp = temp->prev;
-	}
-	c = temp->n;
-	if (_isalpha(temp->n) == 0)
-	{
-		fprintf(stderr, "L%d: can't pchar, value out of range\n", nline);
+		free(global.line);
+		fclose(global.fil);
+		free_l(stack);
+		dprintf (2, "L%u: can't pchar, stack empty\n", nline);
 		exit(EXIT_FAILURE);
 	}
-	printf("%c\n", c);
+	if (temp->n >= 128 || temp->n < 0)
+	{
+		free(global.line);
+		fclose(global.fil);
+		free_l(stack);
+		dprintf (2, "L%d: can't pchar, value out of range\n", nline);
+		exit(EXIT_FAILURE);
+	}
+	printf("%c\n", temp->n);
 }

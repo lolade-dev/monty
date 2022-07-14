@@ -9,8 +9,10 @@
   */
 void nop(stack_t **stack, unsigned int nline)
 {
-	(void)stack;
-	(void)nline;
+	if (*stack)
+	{};
+	if (nline)
+	{};
 }
 
 

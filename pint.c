@@ -10,18 +10,14 @@ void pint(stack_t **stack, unsigned int nline)
 {
 	stack_t *temp;
 
-	if (stack == NULL || *stack == NULL)
-	{
-		fprintf(stderr, "L%d: can't pint, stack empty\n", nline);
-		exit(EXIT_FAILURE);
-	}
-
 	temp = *stack;
-	while (temp)
+	if (temp == NULL)
 	{
-		if (temp->prev == NULL)
-			break;
-		temp = temp->prev;
+		free(global.line);
+		fclose(global.fil);
+		free_l(stack);
+		dprintf (2, "L%u: can't pint, stack empty\n", nline);
+		exit(EXIT_FAILURE);
 	}
 
 	printf("%d\n", temp->n);

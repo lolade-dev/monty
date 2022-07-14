@@ -10,12 +10,12 @@
 void pall(stack_t **stack, unsigned int nline)
 {
 	stack_t *temp;
-	(void)nline;
 
 	temp = *stack;
-	while (temp)
-	{
-		printf("%d\n", temp->n);
-		temp = temp->next;
-	}
+	if (nline)
+		while (temp)
+		{
+			printf("%d\n", temp->n);
+			temp = temp->next;
+		}
 }

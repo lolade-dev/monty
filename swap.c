@@ -9,15 +9,27 @@
   */
 void swap(stack_t **stack, unsigned int nline)
 {
-	int temp;
+	stack_t *temp;
 
-	if (stack == NULL || *stack == NULL || !((*stack)->next))
+	if (*stack && (*stack)->next)
 	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", nline);
+		temp = (*stack)->next;
+		if (temp == NULL)
+		{
+			exit(0);
+		}
+		(*stack)->next = temp->next;
+		(*stack)->prev = temp;
+		temp->next = *stack;
+		temp->prev = NULL;
+		*stack = temp;
+	}
+	else
+	{
+		dprintf (2, "L%u: can't swap, stack too short\n", nline);
+		free(global.line);
+		fclose(global.fil);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
-
-	temp = (*stack)->n;
-	(*stack)->n = (*stack)->next->n;
-	(*stack)->next->n = temp;
 }

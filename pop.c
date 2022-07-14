@@ -9,20 +9,23 @@
   */
 void pop(stack_t **stack, unsigned int nline)
 {
-	if (stack == NULL || *stack == NULL)
+	stack_t *temp;
+
+	temp = *stack;
+	if (temp == NULL)
 	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", nline);
+		dprintf (2, "L%d: can't pop an empty stack\n", nline);
+		free(global.line);
+		fclose(global.fil);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
-	if ((*stack)->next != NULL)
+	if ((*stack)->next)
 	{
-		*stack = (*stack)->next;
-		free((*stack)->prev);
+		*stack = temp->next;
 		(*stack)->prev = NULL;
+		free(temp);
 	}
 	else
-	{
-		free(*stack);
-		*stack = NULL;
-	}
+		free_l(stack);
 }
