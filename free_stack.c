@@ -1,22 +1,16 @@
 #include "monty.h"
-
 /**
-  * free_stack - frees all nodes in a stack.
-  * @stack: pointer to head node pointer of a stack.
-  *
-  * Return: NAIN
-  */
-void free_stack(stack_t **stack)
+ * free_l - free list
+ * @stack: head
+ */
+void free_l(stack_t **stack)
 {
-	stack_t *temp = NULL;
+	stack_t *delete = *stack;
 
-	if (stack == NULL || *stack == NULL)
-		return;
-
-	while (*stack != NULL)
+	while (*stack)
 	{
-		temp = (*stack)->next;
+		delete = delete->next;
 		free(*stack);
-		*stack = temp;
+		*stack = delete;
 	}
 }

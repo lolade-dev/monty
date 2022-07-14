@@ -1,134 +1,54 @@
 #include "monty.h"
 
 /**
-  * rotl - rotates stack to the top
-  * @stack: pointer to the head node pointer of stack
-  *
-  * @nline: line number
-  * Return: NAIN
-  */
-void rotl(stack_t **stack, unsigned int nline)
+ * _rotl - rotates the stack to the top.
+ * @stack: head
+ * @num_line: num line
+ */
+
+void _rotl(stack_t **stack, unsigned int num_line)
 {
-	stack_t *temp;
-	int hold1, hold2;
-	(void)nline;
+	stack_t *temp1;
+	stack_t *temp2;
 
-	if (stack == NULL || *stack == NULL)
+	if (*stack && (*stack)->next)
 	{
-		nop(stack, nline);
+		temp1 = *stack;
+		temp2 = temp1;
+		*stack = temp1->next;
+		(*stack)->prev = NULL;
+		if (num_line)
+			while (temp2->next)
+			{
+				temp2 = temp2->next;
+			}
+		temp2->next = temp1;
+		temp1->prev = temp2;
+		temp1->next = NULL;
 	}
-
-	hold1 = (*stack)->n;
-	temp = *stack;
-
-	while (temp)
-	{
-		if (temp->next == NULL)
-			break;
-		temp = temp->next;
-	}
-
-	hold2 = temp->n;
-	(*stack)->n = hold2;
-	temp->n = hold1;
 }
 
 /**
-  * rotlop - rotates stack to the left
-  * @stack: pointer to the head node pointer of stack
-  *
-  * @nline: line number
-  * Return: NAIN
-  */
-void rotlop(stack_t **stack, unsigned int nline)
+ * _rotr - rotates the stack to the bottom
+ * @stack: head
+ * @num_line: num line
+ */
+
+void _rotr(stack_t **stack, unsigned int num_line)
 {
-	stack_t *temp, *last;
+	stack_t *temp2;
 
-	(void)nline;
-	if (!stack || !(*stack) || !((*stack)->next))
-		return;
-
-	temp = *stack;
-	last = temp;
-
-	while (last->next)
+	if (*stack && (*stack)->next)
 	{
-		last = last->next;
+		temp2 = *stack;
+		if (num_line)
+			while (temp2->next)
+			{
+				temp2 = temp2->next;
+			}
+		temp2->next = *stack;
+		temp2->prev->next = NULL;
+		temp2->prev = NULL;
+		*stack = temp2;
 	}
-
-	last->next = temp;
-	temp->prev = last;
-	temp->next->prev = NULL;
-	*stack = temp->next;
-	temp->next = NULL;
-}
-
-/**
-  * rotrop - rotates stack to the right.
-  * @stack: pointer to the head node pointer of stack
-  * @nline: line number
-  *
-  * Return: NAIN
-  */
-void rotrop(stack_t **stack, unsigned int nline)
-{
-	stack_t *temp, *last;
-
-	(void)nline;
-	if (!stack || !(*stack) || !((*stack)->next))
-		return;
-
-	temp = *stack;
-	last = temp;
-
-	while (last->next)
-	{
-		last = last->next;
-	}
-
-	last->prev->next = NULL;
-	last->prev = NULL;
-	temp->prev = last;
-	last->next = temp;
-	*stack = last;
-}
-
-/**
-  * qpush - pushes to queue instead of stack
-  * @stack: pointer to the head node pointer of stack
-  * @nline: line number
-  *
-  * Return: NAIN
-  */
-void qpush(stack_t **stack, unsigned int nline)
-{
-	stack_t *new, *last;
-
-	if (stack == NULL)
-	{
-		fprintf(stderr, "L%d: stack not found\n", nline);
-		exit(EXIT_FAILURE);
-	}
-
-	new = malloc(sizeof(stack_t));
-	if (new == NULL)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		free_stack(stack);
-		exit(EXIT_FAILURE);
-	}
-
-	last = NULL;
-	if (*stack)
-	{
-		last  = *stack;
-		while (last->next)
-			last = last->next;
-		last->next = new;
-	}
-	else
-		*stack = new;
-	new->prev = last;
-	new->next = NULL;
-	new->n = arg.arg;
 }
