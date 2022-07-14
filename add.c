@@ -1,10 +1,10 @@
 #include "monty.h"
 /**
- * _add - adds the top two elements of the stack.
+ * add - adds the top two elements of the stack.
  * @stack: head
  * @num_line: number of line
  */
-void _add(stack_t **stack, unsigned int num_line)
+void add(stack_t **stack, unsigned int num_line)
 {
 	stack_t *temp1;
 	stack_t *temp2;
